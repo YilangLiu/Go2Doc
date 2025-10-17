@@ -22,3 +22,27 @@ This directory contains how to deploy Unitree Go2 in simulaiton and hardware usi
 
 > [!NOTE]
 > Do not pull unitree sdk2 python from offical unitree github.
+
+1. `cd unitree_sdk2_python`
+2. `pip3 install -e .`
+
+> [!NOTE]
+> If encouter rrror when `pip3 install -e .`: ```bash
+Could not locate cyclonedds. Try to set CYCLONEDDS_HOME or CMAKE_PREFIX_PATH``` This error mentions that the cyclonedds path could not be found. Then try to following stpes:
+
+```bash
+cd ~
+git clone https://github.com/eclipse-cyclonedds/cyclonedds -b releases/0.10.x 
+cd cyclonedds && mkdir build install && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=../install
+cmake --build . --target install
+```
+Enter the unitree_sdk2_python directory, set `CYCLONEDDS_HOME` to the path of the cyclonedds you just compiled, and then install unitree_sdk2_python.
+```bash
+cd ~/unitree_sdk2_python
+export CYCLONEDDS_HOME="~/cyclonedds/install"
+pip3 install -e .
+```
+For details, see: https://pypi.org/project/cyclonedds/#installing-with-pre-built-binaries
+
+## Usage
