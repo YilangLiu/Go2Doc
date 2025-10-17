@@ -70,4 +70,7 @@ To test whether the user's computer is properly connected to the built-in comput
 <img src="media/image4.png" width="400">
 As shown in the above figure, the network card name corresponding to the IP address 192.168.123.222 is enxf8e43b808e06. Users need to remember this name as it will be a necessary parameter when running the routine.
 
-3. Run the deployment example `python3 traj_following_example.py enxf8e43b808e06`
+3. Run the deployment example 
+```bash
+python traj_following_example.py enxf8e43b808e06
+```
