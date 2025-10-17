@@ -28,7 +28,7 @@ This directory contains how to deploy Unitree Go2 in simulaiton and hardware usi
 
 > [!NOTE]
 > If encouter rrror when `pip3 install -e .`: ```bash
-Could not locate cyclonedds. Try to set CYCLONEDDS_HOME or CMAKE_PREFIX_PATH``` This error mentions that the cyclonedds path could not be found. Then try to following stpes:
+Could not locate cyclonedds. Try to set CYCLONEDDS_HOME or CMAKE_PREFIX_PATH``` This error mentions that the cyclonedds path could not be found. Then try the following steps:
 
 ```bash
 cd ~
@@ -46,3 +46,8 @@ pip3 install -e .
 For details, see: https://pypi.org/project/cyclonedds/#installing-with-pre-built-binaries
 
 ## Usage
+
+### Simulation Evaluation
+```bash
+python play_go2_keyboard.py
+```
