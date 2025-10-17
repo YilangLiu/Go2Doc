@@ -51,3 +51,23 @@ For details, see: https://pypi.org/project/cyclonedds/#installing-with-pre-built
 ```bash
 python play_go2_keyboard.py
 ```
+
+### Hardware Testing
+> [!Warning]
+> Always test your controller in the simulation before deploying on real robots
+
+> [!Caution]
+> Wait until the robot is fully started (standing pose) to run the deployment scripts. 
+
+#### Configure the networks. 
+1. Connect one end of the network cable to the Go2 robot, and the other end to the user's computer. Turn on the USB Ethernet of the computer and configure it. The IP address of the onboard computer of the machine dog is 192.168.123.161, so it is necessary to set the USB Ethernet address of the computer to the same network segment as the machine dog. For example, entering 192.168.123.222 ("222" can be changed to other) in the Address field.
+<img src="media/image1.png" width="400">
+<img src="media/image2.png" width="400">
+To test whether the user's computer is properly connected to the built-in computer of the Go2 robot, you can enter ping 192.168.123.161 in the terminal for testing. The connection is successful when something similar to the following appears.
+<img src="media/image3.png" width="400">
+
+2. View the network card names of the 123 network segment through the ifconfig command, as shown in the following figure:
+<img src="media/image4.png" width="400">
+As shown in the above figure, the network card name corresponding to the IP address 192.168.123.222 is enxf8e43b808e06. Users need to remember this name as it will be a necessary parameter when running the routine.
+
+3. Run the deployment example `python3 traj_following_example.py enxf8e43b808e06`
