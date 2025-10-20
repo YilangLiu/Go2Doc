@@ -1,6 +1,6 @@
 # Go2 Documentation 
 
-This directory contains how to deploy Unitree Go2 in simulaiton and hardware using keyboard. The controller for simulation is trained wit custom environment in MuJoCo Playground.
+This directory contains how to deploy Unitree Go2 in simulaiton and hardware using keyboard. The controller for simulation is trained with custom environment in MuJoCo Playground.
 
 ## Installation
 
