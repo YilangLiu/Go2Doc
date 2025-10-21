@@ -33,7 +33,7 @@ COPY . /app/go2doc
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir mediapy wandb && \
     pip install --no-cache-dir -e /app/mujoco_playground && \
-    pip install --no-cache-dir "jax[cuda12]==0.4.38" && \
+    pip install --no-cache-dir "jax[cuda12]" && \
     pip install --no-cache-dir warp onnxruntime hidapi
 
 # Set the default command to launch a bash shell for interactive use.
