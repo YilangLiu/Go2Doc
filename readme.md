@@ -74,3 +74,30 @@ As shown in the above figure, the network card name corresponding to the IP addr
 ```bash
 python traj_following_example.py enxf8e43b808e06
 ```
+
+## Docker Installation
+This instruction will install docker environment as well as jax and CUDA support. The CUDA version is 12.8 with jax version 0.6.8.  
+> [!NOTE]
+> Docker Installation only works for simulation purposes. The dockerfile does not include unitree sdk2 python installation since it is used for hardware communication
+
+> [!NOTE]
+> This instruction assumes docker has been correctly installed in the computer.
+
+1. Post-install steps for Docker 
+```bash
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+# Verify Docker
+docker run hello-world
+```
+
+2. Build docker images
+```bash
+bash ./build.sh
+```
+
+3. Run Docker images
+```bash
+xhost +local:docker && docker run --rm -it --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v "$HOME/.Xauthority:/root/.Xauthority:rw" playground bash
+```
