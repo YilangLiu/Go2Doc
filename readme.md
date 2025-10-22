@@ -83,7 +83,38 @@ This instruction will install docker environment as well as jax and CUDA support
 > [!NOTE]
 > This instruction assumes docker has been correctly installed in the computer.
 
-1. Post-install steps for Docker 
+1. Install and Configure Nvidia Container Toolkit
+```bash
+# Install the prerequisites for the instructions below:
+sudo apt-get update && apt-get install -y --no-install-recommends \
+   curl \
+   gnupg2
+
+# Configure the production repository:
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+  && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+# Update the packages list from the repository:
+sudo apt-get update
+
+# Install the NVIDIA Container Toolkit packages:
+export NVIDIA_CONTAINER_TOOLKIT_VERSION=1.18.0-1
+  sudo apt-get install -y \
+      nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+      nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+      libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+      libnvidia-container1=${NVIDIA_CONTAINER_TOOLKIT_VERSION}
+
+# Configure the container runtime
+sudo nvidia-ctk runtime configure --runtime=docker
+
+# Restart the Docker daemon:
+sudo systemctl restart docker
+```
+
+2. Post-install steps for Docker 
 ```bash
 sudo groupadd docker
 sudo usermod -aG docker $USER
@@ -92,12 +123,18 @@ newgrp docker
 docker run hello-world
 ```
 
-2. Build docker images
+3. Build docker images
 ```bash
 bash ./build.sh
 ```
 
-3. Run Docker images
+4. Run Docker images
 ```bash
 xhost +local:docker && docker run --rm -it --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v "$HOME/.Xauthority:/root/.Xauthority:rw" playground bash
+```
+
+5. Play Examples 
+```bash
+cd go2doc
+python3 play_go2_fix_direction.py
 ```

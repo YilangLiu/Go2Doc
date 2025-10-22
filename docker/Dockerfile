@@ -23,16 +23,13 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Clone the mujoco_playground repository into a subdirectory [2, 3, 4, 5].
-RUN git clone https://github.com/google-deepmind/mujoco_playground.git ./mujoco_playground
-
 # Copy the Go2Doc project files
 COPY . /app/go2doc
 
 # Upgrade pip and install the necessary Python packages
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir mediapy wandb && \
-    pip install --no-cache-dir -e /app/mujoco_playground && \
+    pip install --no-cache-dir -e /app/go2doc/mujoco_playground && \
     pip install --no-cache-dir "jax[cuda12]" && \
     pip install --no-cache-dir warp onnxruntime hidapi
 
