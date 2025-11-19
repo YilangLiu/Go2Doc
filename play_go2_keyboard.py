@@ -118,4 +118,4 @@ def load_callback(model=None, data=None):
 
 
 if __name__ == "__main__":
-  viewer.launch(loader=load_callback)
+  viewer.launch(loader=load_callback, show_left_ui=False, show_right_ui=False)
