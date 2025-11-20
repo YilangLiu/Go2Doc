@@ -4,11 +4,13 @@ from unitree_sdk2py.idl.unitree_go.msg.dds_._HeightMap_ import HeightMap_
 import numpy as np
 import sys
 import time
+from collections import deque
 
 class Custom:
     def __init__(self):
         self.pointcloud_topic = "rt/utlidar/cloud"
         self.heightmap_topic = "rt/utlidar/height_map_array"
+        self.heightmap_memory_size = 500
     
     def Init(self):
         self.point_cloud_subscriber = ChannelSubscriber(self.pointcloud_topic, PointCloud2_)
@@ -16,14 +18,15 @@ class Custom:
         self.point_cloud_subscriber.Init(self.PointCloud_Handler, 10)
         self.height_map_subscriber.Init(self.HeightMap_Handler, 10)
         self.point_cloud_data = np.zeros(10)
-        self.height_map_data = []
-
+        self.height_map_msg_debug = None
+        self.height_map_data = deque(maxlen=self.heightmap_memory_size)
+        
     def PointCloud_Handler(self, msg: PointCloud2_):
         # print("Receive point cloud data! \n")
         # print(f"stamp {msg.header.stamp.sec}.{msg.header.stamp.nanosec} \n")
         # print(f"frame = {msg.header.frame_id} \n")
         # print(f"point cloud width {msg.width}, height: {msg.height} \n")
-        self.point_cloud_data = msg.data
+        self.point_cloud_msg = msg
 
     def HeightMap_Handler(self, msg: HeightMap_):
         # print("Receive Height Map data! \n")
@@ -31,7 +34,9 @@ class Custom:
         # print(f"frame = {msg.header.frame_id} \n")
         # print(f"point cloud width {msg.width}, height: {msg.height} \n")
         # print(f"point cloud resolution msg.resolution \n")
-        
+
+        self.height_map_msg_debug = msg
+
         width = msg.width
         height = msg.height
         resolution = msg.resolution
@@ -51,8 +56,15 @@ class Custom:
         
     def Start(self):
         while True:
-            print(f"first pointcloud data is: {self.point_cloud_data[0]}")
-            print(f"first height map {self.height_map_data[0]}")
+            try:
+                print(f"recieve {self.point_cloud_msg.header.frame_id} with number: {self.point_cloud_msg.width}")
+            except:
+                print("no point cloud data received yet.")
+            
+            try:
+                print(f"recieve {self.height_map_msg_debug.frame_id} {self.height_map_data[0]}")
+            except:
+                print("no height map data received yet.")
             time.sleep(0.05)
 
 if __name__ == "__main__":
