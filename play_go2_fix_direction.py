@@ -97,7 +97,7 @@ def load_callback(model=None, data=None):
   model.opt.timestep = sim_dt
 
   policy = OnnxController(
-      policy_path=(_ONNX_DIR / "go2_trot_policy.onnx").as_posix(),
+      policy_path=(_ONNX_DIR / "go2_policy.onnx").as_posix(),
       default_angles=np.array(model.keyframe("home").qpos[7:]),
       n_substeps=n_substeps,
       action_scale=0.5,

@@ -37,7 +37,7 @@ class OnnxController:
       default_angles: np.ndarray,
       n_substeps: int,
       action_scale: float = 0.5,
-      vel_scale_x: float = 1.5,
+      vel_scale_x: float = 1.0,
       vel_scale_y: float = 0.8,
       vel_scale_rot: float = 2 * np.pi,
   ):
@@ -103,7 +103,7 @@ def load_callback(model=None, data=None):
   model.opt.timestep = sim_dt
 
   policy = OnnxController(
-      policy_path=(_ONNX_DIR / "go2_trot_policy.onnx").as_posix(),
+      policy_path=(_ONNX_DIR / "go2_policy.onnx").as_posix(),
       default_angles=np.array(model.keyframe("home").qpos[7:]),
       n_substeps=n_substeps,
       action_scale=0.5,
