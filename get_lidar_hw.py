@@ -6,9 +6,11 @@ import sys
 import time
 from collections import deque
 import open3d as o3d
+import os
+from datetime import datetime
 
 class Custom:
-    def __init__(self):
+    def __init__(self, save_dir="pointcloud_data"):
         self.pointcloud_topic = "rt/utlidar/cloud"
         self.heightmap_topic = "rt/utlidar/height_map_array"
         self.heightmap_memory_size = 500
@@ -17,6 +19,9 @@ class Custom:
         self.vis = None
         self.pcd = None
         self.running = True
+        self.save_dir = save_dir
+        self.frame_count = 0
+        os.makedirs(self.save_dir, exist_ok=True)
     
     def Init(self):
         self.point_cloud_subscriber = ChannelSubscriber(self.pointcloud_topic, PointCloud2_)
@@ -139,6 +144,25 @@ class Custom:
         
         return points, colors
     
+    def save_pointcloud(self, points, colors, frame_id=None):
+        """Save pointcloud points and colors to numpy file"""
+        if len(points) == 0:
+            return
+        
+        # Create filename with timestamp and frame number
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        if frame_id is not None:
+            filename = f"pointcloud_{timestamp}_frame{self.frame_count:06d}_{frame_id}.npz"
+        else:
+            filename = f"pointcloud_{timestamp}_frame{self.frame_count:06d}.npz"
+        
+        filepath = os.path.join(self.save_dir, filename)
+        
+        # Save both points and colors in a single npz file
+        np.savez(filepath, points=points, colors=colors)
+        print(f"Saved pointcloud to {filepath} ({len(points)} points)")
+        self.frame_count += 1
+    
     def update_visualization(self):
         """Update Open3D visualization with new pointcloud data"""
         if self.point_cloud_msg is None or not self.point_cloud_updated:
@@ -155,6 +179,10 @@ class Custom:
             
             if len(points) == 0:
                 return
+            
+            # Save pointcloud to numpy file
+            frame_id = self.point_cloud_msg.header.frame_id if self.point_cloud_msg else None
+            self.save_pointcloud(points, colors, frame_id)
             
             # Update point cloud
             self.pcd.points = o3d.utility.Vector3dVector(points)
