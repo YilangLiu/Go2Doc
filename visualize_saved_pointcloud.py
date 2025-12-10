@@ -73,3 +73,4 @@ if __name__ == "__main__":
         print("No file specified. Visualizing all pointclouds in 'pointcloud_data' directory...")
         visualize_all_pointclouds()
 
+
