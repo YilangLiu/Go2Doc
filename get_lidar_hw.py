@@ -11,7 +11,7 @@ from datetime import datetime
 
 class Custom:
     def __init__(self, save_dir="pointcloud_data"):
-        self.pointcloud_topic = "rt/utlidar/cloud"
+        self.pointcloud_topic = "rt/utlidar/cloud" # rt/utlidar/cloud desckewed" or rt/utlidar/cloud_desckewed"
         self.heightmap_topic = "rt/utlidar/height_map_array"
         self.heightmap_memory_size = 500
         self.point_cloud_msg = None
