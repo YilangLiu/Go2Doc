@@ -121,6 +121,8 @@ class Custom:
         self.sport_client.StandUp()
         input("Press Enter to unlock joint...")
         self.sport_client.BalanceStand()
+        # turn on obstacle avoidance
+        self.sport_client.FreeAvoid(True)
         self.reset_arm()
         stop_event = threading.Event()
         wait_time = 0
